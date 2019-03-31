@@ -43,7 +43,6 @@ public class Ejemplos {
         g.agregarRuta('h','e', 1);
         g.agregarRuta('h','f', 25);
         g.agregarRuta('h','g', 14);
-        char[] nodos = new char[2];
         String dato="";
         try{
             System.out.println("Digite el origen.");
@@ -64,6 +63,7 @@ public class Ejemplos {
         g.agregarRuta('b','a', 15);
         g.agregarRuta('b','ñ', 16);
         g.agregarRuta('b','c', 17);
+        g.agregarRuta('b','e', 25);
         g.agregarRuta('c','b', 17);
         g.agregarRuta('d','e', 60);
         g.agregarRuta('e','f', 37);
@@ -89,7 +89,17 @@ public class Ejemplos {
         g.agregarRuta('n','g', 5);
         g.agregarRuta('ñ','b', 16);
         
-        String dato = "al";
+        //String dato = "ab";
+        String dato="";
+        try{
+            System.out.println("Digite el origen.");
+            String origen = entradaDatos.readLine().toLowerCase();
+            System.out.println("Seleccione una opcion.");
+            String destino = entradaDatos.readLine().toLowerCase();
+            dato = origen+destino;
+        }catch(IOException ioe){
+            
+        }
         
         return dato.toCharArray();
     }
