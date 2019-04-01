@@ -103,4 +103,49 @@ public class Ejemplos {
         
         return dato.toCharArray();
     }
+    
+    public char[] GrafoTallerClase(Grafo g){
+        g.agregarRuta('a','b', 1);
+        g.agregarRuta('a','c', 4);
+        g.agregarRuta('a','d', 3);
+        g.agregarRuta('b','a', 1);
+        g.agregarRuta('b','c', 4);
+        g.agregarRuta('b','e', 2);
+        g.agregarRuta('c','a', 4);
+        g.agregarRuta('c','b', 4);
+        g.agregarRuta('c','d', 2);
+        g.agregarRuta('c','g', 1);
+        g.agregarRuta('d','a', 3);
+        g.agregarRuta('d','c', 2);
+        g.agregarRuta('d','e', 5);
+        g.agregarRuta('d','g', 3);
+        g.agregarRuta('d','i', 10);
+        g.agregarRuta('e','b', 2);
+        g.agregarRuta('e','d', 5);
+        g.agregarRuta('e','g', 1);
+        g.agregarRuta('e','f', 3);
+        g.agregarRuta('f','e', 3);
+        g.agregarRuta('f','g', 1);
+        g.agregarRuta('f','i', 6);
+        g.agregarRuta('g','c', 1);
+        g.agregarRuta('g','d', 3);
+        g.agregarRuta('g','e', 1);
+        g.agregarRuta('g','f', 1);
+        g.agregarRuta('i','d', 10);
+        g.agregarRuta('i','f', 6);
+        
+        //String dato = "ab";
+        String dato="";
+        try{
+            System.out.println("Digite el origen.");
+            String origen = entradaDatos.readLine().toLowerCase();
+            System.out.println("Seleccione una opcion.");
+            String destino = entradaDatos.readLine().toLowerCase();
+            dato = origen+destino;
+        }catch(IOException ioe){
+            
+        }
+        
+        return dato.toCharArray();
+    }
 }

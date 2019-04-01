@@ -1,12 +1,10 @@
 package com.mycompany.ejemplodijkstra;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
-import java.util.Vector;
 
 /**
  *
@@ -17,7 +15,7 @@ public class Grafo{
     int[][] grafo;  // Matriz de distancias entre nodos
     String  rutaMasCorta;                           // distancia más corta
     int     longitudMasCorta = Integer.MAX_VALUE;   // ruta más corta
-    List<Nodo>  listos=null;                        // nodos revisados Dijkstra
+    List<Nodo>  listNodos=null;                        // nodos revisados Dijkstra
  
     // construye el grafo con la serie de identificadores de nodo en una cadena
     Grafo(String serieNodos) {
@@ -47,34 +45,37 @@ public class Grafo{
         encontrarRutaMinimaDijkstra(inicio);
         // recupera el nodo final de la lista de terminados
         Nodo tmp = new Nodo(fin);
-        if(!listos.contains(tmp)) {
+        if(!listNodos.contains(tmp)) {
             System.out.println("Error, nodo no alcanzable");
-            return "Bye";
+            return "Adios";
         }
-        tmp = listos.get(listos.indexOf(tmp));
+        tmp = listNodos.get(listNodos.indexOf(tmp));
         int distancia = tmp.distancia;  
         // crea una pila para almacenar la ruta desde el nodo final al origen
-        Stack<Nodo> pila = new Stack<Nodo>();
+        Stack<Nodo> pila = new Stack();
+        int iteraciones=0;
         while(tmp != null) {
+            iteraciones++;
             pila.add(tmp);
             tmp = tmp.procedencia;
         }
         String ruta = "";
         // recorre la pila para armar la ruta en el orden correcto
         while(!pila.isEmpty()) ruta+=(pila.pop().id + " ");
-        return distancia + ": " + ruta;
+        return "\tAcumulado: "+distancia + "\n\tRuta: " + ruta+"\n\tIteraciones: "+(iteraciones-1);
     }
  
     // encuentra la ruta más corta desde el nodo inicial a todos los demás
     public void encontrarRutaMinimaDijkstra(char inicio) {
-        Queue<Nodo>   cola = new PriorityQueue<Nodo>(); // cola de prioridad
+        Queue<Nodo>   cola = new PriorityQueue(); // cola de prioridad
         Nodo            ni = new Nodo(inicio);          // nodo inicial
          
-        listos = new LinkedList<Nodo>();// lista de nodos ya revisados
+        listNodos = new LinkedList();// lista de nodos ya revisados
         cola.add(ni);                   // Agregar nodo inicial a la cola de prioridad
         while(!cola.isEmpty()) {        // mientras que la cola no esta vacia
             Nodo tmp = cola.poll();     // saca el primer elemento
-            listos.add(tmp);            // lo manda a la lista de terminados
+            System.out.println("Pasé por: "+ tmp.id);
+            listNodos.add(tmp);            // lo manda a la lista de terminados
             int p = posicionNodo(tmp.id);   
             for(int j=0; j<grafo[p].length; j++) {  // revisa los nodos hijos del nodo tmp
                 if(grafo[p][j]==0) continue;        // si no hay conexión no lo evalua
@@ -101,53 +102,6 @@ public class Grafo{
     // verifica si un nodo ya está en lista de terminados
     public boolean estaTerminado(int j) {
         Nodo tmp = new Nodo(nodos[j]);
-        return listos.contains(tmp);
-    }
- 
-    // encontrar la ruta mínima por fuerza bruta
-    public void encontrarRutaMinimaFuerzaBruta(char inicio, char fin) {
-        int p1 = posicionNodo(inicio);
-        int p2 = posicionNodo(fin);
-        // cola para almacenar cada ruta que está siendo evaluada
-        Stack<Integer> resultado = new Stack<Integer>();
-        resultado.push(p1);
-        recorrerRutas(p1, p2, resultado);
-    }
- 
-    // recorre recursivamente las rutas entre un nodo inicial y un nodo final
-    // almacenando en una cola cada nodo visitado
-    private void recorrerRutas(int nodoI, int nodoF, Stack<Integer> resultado) {
-        // si el nodo inicial es igual al final se evalúa la ruta en revisión
-        if(nodoI==nodoF) {
-            int respuesta = evaluar(resultado);
-            if(respuesta < longitudMasCorta) {
-                longitudMasCorta = respuesta;
-                rutaMasCorta     = "";
-                for(int x: resultado) rutaMasCorta+=(nodos[x]+" ");
-            }
-            return;
-        }
-        // Si el nodoInicial no es igual al final se crea una lista con todos los nodos
-        // adyacentes al nodo inicial que no estén en la ruta en evaluación
-        List<Integer> lista = new Vector<Integer>();
-        for(int i=0; i<grafo.length;i++) {
-            if(grafo[nodoI][i]!=0 && !resultado.contains(i))lista.add(i);
-        }
-        // se recorren todas las rutas formadas con los nodos adyacentes al inicial
-        for(int nodo: lista) {
-            resultado.push(nodo);
-            recorrerRutas(nodo, nodoF, resultado);
-            resultado.pop();
-        }
-    }
- 
-    // evaluar la longitud de una ruta
-    public int evaluar(Stack<Integer> resultado) {
-        int  resp = 0;
-        int[]   r = new int[resultado.size()];
-        int     i = 0;
-        for(int x: resultado) r[i++]=x;
-        for(i=1; i<r.length; i++) resp+=grafo[r[i]][r[i-1]];
-        return resp;
+        return listNodos.contains(tmp);
     }
 }
